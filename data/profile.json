@@ -1,0 +1,30 @@
+{
+  "name": "Евгений Курбатов",
+  "description": "Разрабатываю клиентские интерфейсы на React, Next.js и Vue. Есть опыт проектной работы: от функциональных прототипов и вёрстки до интеграции с API и участия в развёртывании сайтов.",
+  "links": [{ "label": "GitHub", "url": "https://github.com/Ry4on" }],
+  "skills": ["TypeScript", "JavaScript", "React", "Next.js", "Vue", "Tailwind CSS", "Node.js", "SQL", "Git", "Docker", "API", "Python"],
+  "experience": [
+    {
+      "company": "Фриланс · проектная работа",
+      "position": "Frontend-разработчик",
+      "startDate": "2024-01-01",
+      "endDate": "2026-04-01",
+      "achievements": [
+        "Сотрудничал с ПЭМ как внешний разработчик клиентских проектов.",
+        "Работал с дизайн-макетами: выполнял вёрстку и перерабатывал существующие страницы."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "TRVP",
+      "description": "Учебный проект по курсу ТРВП на TypeScript с отдельными клиентской и серверной частями.",
+      "url": "https://github.com/Ry4on/TRVP"
+    },
+    {
+      "name": "Gradreserch",
+      "description": "Исследовательский проект на Python со скриптами подготовки данных и запуска моделей для набора CSV электродвигателя.",
+      "url": "https://github.com/Ry4on/Gradreserch"
+    }
+  ]
+}

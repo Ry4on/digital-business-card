@@ -1,0 +1,13 @@
+.git
+.github
+node_modules
+dist
+.test-dist
+coverage
+.env
+.env.*
+!.env.example
+*.log
+test
+README.md
+src/generated

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.test-dist/
+src/generated/
+.env
+.env.*
+!.env.example
+coverage/
+*.log
+.local-postgres/
