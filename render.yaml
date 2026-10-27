@@ -1,0 +1,17 @@
+# Render Free web service. PostgreSQL is provided separately by Neon Free.
+# DATABASE_URL is supplied privately during initial Blueprint creation.
+services:
+  - type: web
+    name: evgeny-digital-business-card
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
