@@ -5,6 +5,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { DatabaseModule } from './database/database.module';
 import { HealthController } from './health.controller';
 import { ProfileModule } from './profile/profile.module';
+import { BUSINESS_CARD_QUERY } from './profile/profile.query';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ProfileModule } from './profile/profile.module';
         ? { message: 'The profile is temporarily unavailable', extensions: { code: 'INTERNAL_SERVER_ERROR' } }
         : error,
       plugins: [ApolloServerPluginLandingPageLocalDefault({
+        document: BUSINESS_CARD_QUERY,
         embed: { runTelemetry: false },
         footer: false,
       })],

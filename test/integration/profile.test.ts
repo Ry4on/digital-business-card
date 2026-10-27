@@ -81,7 +81,14 @@ test('PostgreSQL-backed business card', { timeout: 90_000 }, async t => {
     const sandbox = await fetch(`${baseUrl}/graphql`, { headers: { accept: 'text/html' } });
     assert.equal(sandbox.status, 200);
     assert.match(sandbox.headers.get('content-type') ?? '', /text\/html/);
-    assert.match(await sandbox.text(), /Apollo|Sandbox/i);
+    const html = await sandbox.text();
+    assert.match(html, /Apollo|Sandbox/i);
+    // Exercise the operation shipped to the browser, not just a test-authored query.
+    const configMatch = html.match(/var embeddedSandboxConfig = ([^\n]+);/);
+    assert.ok(configMatch?.[1], 'Sandbox must include its initial configuration');
+    const config = JSON.parse(configMatch[1]) as { initialState: { document?: string } };
+    assert.ok(config.initialState.document, 'Sandbox must open with a working profile operation');
+    assert.deepEqual(await query(config.initialState.document), { profile: expectedProfile(source) });
     const health = await fetch(`${baseUrl}/health`);
     assert.equal(health.status, 200);
     assert.deepEqual(await health.json(), { status: 'ok' });

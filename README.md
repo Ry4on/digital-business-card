@@ -34,7 +34,7 @@ docker compose up --build --wait
 
 ## Пример запроса
 
-Вставьте запрос в Apollo Sandbox и нажмите кнопку выполнения:
+Apollo Sandbox открывается с готовым запросом `BusinessCard`. Нажмите кнопку выполнения. Этот же запрос можно вставить вручную, если браузер сохранил старую вкладку:
 
 ```graphql
 query BusinessCard {
