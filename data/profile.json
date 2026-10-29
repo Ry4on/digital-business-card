@@ -17,14 +17,9 @@
   ],
   "projects": [
     {
-      "name": "TRVP",
-      "description": "Учебный проект по курсу ТРВП на TypeScript с отдельными клиентской и серверной частями.",
-      "url": "https://github.com/Ry4on/TRVP"
-    },
-    {
-      "name": "Gradreserch",
-      "description": "Исследовательский проект на Python со скриптами подготовки данных и запуска моделей для набора CSV электродвигателя.",
-      "url": "https://github.com/Ry4on/Gradreserch"
+      "name": "Цифровая визитка",
+      "description": "Публичный GraphQL API на NestJS, TypeScript, Prisma и PostgreSQL: автоматические миграции и заполнение базы, Apollo Sandbox, Docker и CI.",
+      "url": "https://github.com/Ry4on/digital-business-card"
     }
   ]
 }
