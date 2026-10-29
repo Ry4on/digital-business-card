@@ -1,6 +1,6 @@
 # Бесплатный стенд: Render + Neon
 
-Инструкция проверена по официальной документации 27 октября 2026 года. В этой схеме приложение размещается на **Render Free**, PostgreSQL — на **Neon Free**. Аккаунты и публикация создаются отдельно; наличие этих файлов ещё не означает, что стенд развёрнут.
+Инструкция проверена по официальной документации 29 октября 2026 года. В этой схеме приложение размещается на **Render Free**, PostgreSQL — на **Neon Free**.
 
 ## Что входит в бесплатный вариант
 
@@ -23,11 +23,17 @@ Neon Free стоит $0, не ограничен пробным сроком и 
 
 Сначала опубликуйте этот проект в собственном GitHub-репозитории и дождитесь успешного workflow **CI** на выбранном коммите.
 
+Сервис создан напрямую в Render из публичной ветки `main`: Docker, Free, Frankfurt. В его Settings установлены **Health Check Path → `/health`** и **Auto-Deploy → Off**, а `DATABASE_URL` сохранён в Environment. Публикация новой версии выполняется вручную после успешного CI. Этот сервис не управляется Blueprint; для изменения его настроек используйте Settings и Environment. Не создавайте второй сервис, если нужно только обновить код.
+
+Для нового окружения можно применить Blueprint:
+
 1. В Render подключите GitHub-аккаунт с доступом к репозиторию. Откройте **New → Blueprint**, выберите репозиторий и ветку с `render.yaml`.
 2. Проверьте предлагаемый ресурс: один **Web Service**, runtime **Docker**, plan **Free**, регион **Frankfurt**. База Render в Blueprint не создаётся.
 3. При запросе `DATABASE_URL` вставьте прямой URL из Neon. В YAML стоит `sync: false`, поэтому Render запрашивает значение при создании Blueprint и не хранит его в репозитории.
 4. Примените Blueprint. Render собирает существующий `Dockerfile` и использует его `CMD`: миграции → seed → HTTP-сервер. Отдельные Build Command, Docker Command и Pre-deploy Command задавать не нужно. Приложение слушает `0.0.0.0` и переданный платформой `PORT`.
 5. Откройте логи сервиса. После успешных миграций ожидается `Profile initialized.` и запуск Nest. Затем Render проверяет `/health` и переводит сервис в Live.
+
+В контейнере Prisma CLI вызывается напрямую через Node, затем выполняется seed и запускается сервер. Пакетный менеджер при старте не вызывается: установка зависимостей выполняется только при сборке образа.
 
 Параметры `runtime: docker`, `plan: free`, `healthCheckPath` и `sync: false` описаны в [Blueprint reference](https://render.com/docs/blueprint-spec). Использование Dockerfile `CMD` подтверждено в [Docker on Render](https://render.com/docs/docker). Успех `/health` означает, что приложение отвечает и PostgreSQL доступна; Render ожидает успешный HTTP-ответ за пять секунд. [Health Checks](https://render.com/docs/health-checks).
 
@@ -35,10 +41,12 @@ Neon Free стоит $0, не ограничен пробным сроком и 
 
 ## 3. Проверка и ссылки для сдачи
 
-Render покажет фактический HTTPS-адрес сервиса. Сохраните две ссылки:
+Ссылки действующего стенда для сдачи:
 
-- `https://<фактический-домен>.onrender.com/graphql` — Apollo Sandbox для проверяющего.
-- Фактический URL GitHub-репозитория — исходники и README.
+- [Apollo Sandbox](https://evgeny-digital-business-card.onrender.com/graphql) — просмотр API и выполнение запросов.
+- [GitHub](https://github.com/Ry4on/digital-business-card) — исходники и README.
+
+При повторном развёртывании в собственном окружении Render назначит другой HTTPS-адрес.
 
 Проверьте `/health`: ожидаются `200` и `{"status":"ok"}`. Затем откройте `/graphql` и выполните запрос:
 
@@ -61,6 +69,8 @@ query BusinessCard {
 
 ## Обновления
 
-В `render.yaml` задано `autoDeployTrigger: checksPass`: после изменений в связанной ветке Render ожидает успешных CI-проверок. Для этого нужен подключённый GitHub-провайдер. Если проверок у коммита нет либо одна завершилась ошибкой, автоматического deployment не будет. Публикация по одному публичному Git URL без интеграции выполняется вручную. [Deploying on Render](https://render.com/docs/deploys).
+Для действующего сервиса: отправьте изменения в GitHub, дождитесь успешного CI и выберите **Manual Deploy → Deploy latest commit** в Render. После статуса Live проверьте `/health` и GraphQL-запрос. [Панель сервиса](https://dashboard.render.com/web/srv-dbhipho473hc73a43eig).
+
+Для нового окружения через Blueprint в `render.yaml` задано `autoDeployTrigger: checksPass`: Render ожидает успешных CI-проверок. Для этого нужен подключённый GitHub-провайдер. Если проверок у коммита нет либо одна завершилась ошибкой, автоматического deployment не будет. Публикация по одному публичному Git URL без интеграции выполняется вручную. [Deploying on Render](https://render.com/docs/deploys).
 
 Изменение TypeScript или `data/profile.json` отправляется обычным коммитом. Новый Docker-образ включает актуальный JSON, а старт контейнера синхронизирует его с Neon. Локальные `.env`, адрес локальной Docker-базы и её пароль для опубликованного сервиса не используются.

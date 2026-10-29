@@ -2,6 +2,11 @@
 
 Backend-приложение с публичным GraphQL API: профиль, профессиональные ссылки, навыки, опыт работы и проекты. При старте приложение применяет миграции PostgreSQL и заполняет базу данными из `data/profile.json`.
 
+- [Посмотреть проект — Apollo Sandbox](https://evgeny-digital-business-card.onrender.com/graphql)
+- [Исходный код](https://github.com/Ry4on/digital-business-card)
+
+В Sandbox уже подготовлен запрос `BusinessCard`: нажмите кнопку выполнения. Стенд работает на Render Free + Neon Free. После простоя первое открытие может занять около минуты.
+
 Стек: TypeScript, Node.js 24, NestJS 12, Prisma 7, PostgreSQL 17, GraphQL, Apollo Server 5, Docker и Git. Версии зависимостей зафиксированы в `pnpm-lock.yaml`; пакетный менеджер — pnpm 11.25.0.
 
 ## Запуск с нуля
@@ -153,7 +158,7 @@ pnpm db:deploy
 pnpm test:integration
 ```
 
-GitHub Actions устанавливает зависимости по lockfile, собирает приложение, проверяет типы, запускает unit- и integration-тесты с PostgreSQL. Затем workflow собирает Docker-образ, запускает полный Compose-стек с пустым volume и выполняет GraphQL-запрос через HTTP. Это описание настроенного workflow, а не утверждение о результате ещё не выполненного удалённого запуска.
+GitHub Actions устанавливает зависимости по lockfile, собирает приложение, проверяет типы, запускает unit- и integration-тесты с PostgreSQL. Затем workflow собирает Docker-образ, запускает полный Compose-стек с пустым volume и выполняет GraphQL-запрос через HTTP. [Проверка коммита `be993a7`](https://github.com/Ry4on/digital-business-card/actions/runs/40865486987) завершилась успешно: включая чистый Docker-запуск и запрос к API.
 
 При подготовке решения на Windows и Node.js 24.22.1 выполнены: установка по lockfile, генерация и валидация Prisma, сборка, проверка типов и 8 unit-тестов. Все 7 интеграционных сценариев повторно прошли с PostgreSQL 17.11 из Docker: вложенный HTTP-запрос, Sandbox, порядок коллекций, параллельный seed, синхронизация, откат транзакции и постоянное число SQL-запросов при 100 навыках.
 
@@ -161,7 +166,7 @@ GitHub Actions устанавливает зависимости по lockfile, 
 
 ## Развёртывание
 
-Для бесплатного демонстрационного стенда подготовлены `render.yaml` и [инструкция Render Free + Neon Free](docs/deployment.md). Render собирает этот Dockerfile, а адрес Neon задаётся секретной переменной `DATABASE_URL`. После простоя первое открытие бесплатного сервиса может занять около минуты.
+Демонстрационный стенд развёрнут на Render Free + Neon Free: [Apollo Sandbox](https://evgeny-digital-business-card.onrender.com/graphql), [проверка готовности](https://evgeny-digital-business-card.onrender.com/health). Render собирает этот Dockerfile, а адрес Neon задан секретной переменной `DATABASE_URL`. Сервис работает в Frankfurt; PostgreSQL 17 размещена в том же регионе. В репозитории есть `render.yaml` для нового окружения и [инструкция с фактическим порядком обновлений](docs/deployment.md).
 
 Приложение можно развернуть на хостинге, который поддерживает Docker и постоянную PostgreSQL:
 
@@ -173,4 +178,4 @@ GitHub Actions устанавливает зависимости по lockfile, 
 
 Параметры локальной базы из Compose не следует переносить в публичное окружение. Переменные окружения хостинга не сохраняются в репозиторий.
 
-Для сдачи задания нужны две ссылки: публичный `https://<host>/graphql` с Apollo Sandbox и репозиторий с исходным кодом. Локальный адрес `localhost` доступен только на компьютере разработчика. Публикация стенда и репозитория выполняется отдельно после проверки данных визитки.
+29 октября 2026 года проверен публичный стенд версии `be993a7`: Render подтвердил Live, `/health` вернул `200`, Sandbox выполнил запрос `BusinessCard` с `200`, а полный GraphQL-ответ совпал с `data/profile.json` по всем полям. Миграции и seed выполнились автоматически в новой облачной базе. Две ссылки для просмотра проекта и исходного кода находятся в начале README.
