@@ -20,6 +20,11 @@
       "name": "Цифровая визитка",
       "description": "Публичный GraphQL API на NestJS, TypeScript, Prisma и PostgreSQL: автоматические миграции и заполнение базы, Apollo Sandbox, Docker и CI.",
       "url": "https://github.com/Ry4on/digital-business-card"
+    },
+    {
+      "name": "CharCreator",
+      "description": "Университетский командный проект: сайт для создания аватаров персонажей D&D. Участвовал как контрибьютор.",
+      "url": "https://github.com/CharCreator"
     }
   ]
 }
